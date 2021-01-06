@@ -16,4 +16,6 @@ ENTRYPOINT exec java ${JAVA_OPTS_ACTIVITY} org.springframework.boot.loader.JarLa
  --spring.data.mongodb.username=${DATABASE_USERNAME_ACTIVITY} \
  --spring.data.mongodb.password=${DATABASE_PASSWORD_ACTIVITY} \
  --spring.data.mongodb.database=${DATABASE_NAME_ACTIVITY} \
- --eureka.client.service-url.defaultZone=${EUREKA_SERVICE_URL}
+ --eureka.client.service-url.defaultZone=${EUREKA_SERVICE_URL} \
+ --activity.suggestions.location=${ACTIVITY_SUGGESTIONS_LOCATION} \
+ --activity.suggestions.location-radius=${ACTIVITY_SUGGESTIONS_LOCATION_RADIUS}
