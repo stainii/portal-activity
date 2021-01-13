@@ -1,8 +1,11 @@
 package be.stijnhooft.portal.activity.mappers;
 
 import be.stijnhooft.portal.activity.domain.Activity;
+import be.stijnhooft.portal.activity.services.ImageService;
 import be.stijnhooft.portal.model.domain.Event;
 import be.stijnhooft.portal.model.domain.FlowAction;
+import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -10,7 +13,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class SuggestionEventMapper {
+
+    private final ImageService imageService;
 
     public List<Event> map(Collection<Activity> suggestions) {
         return suggestions.stream()
@@ -28,7 +34,9 @@ public class SuggestionEventMapper {
         var map = new HashMap<String, String>();
         map.put("name", activity.getName());
         map.put("description", activity.getDescription());
-        map.put("photo", activity.getPhoto());
+        if (StringUtils.isNotEmpty(activity.getPhoto())) {
+            map.put("photo", imageService.findPortalImageUrl() + "api/retrieve/" + activity.getPhoto());
+        }
         return map;
     }
 

@@ -88,7 +88,7 @@ public class ImageService {
         return Base64.getDecoder().decode(data);
     }
 
-    private String findPortalImageUrl() {
+    public String findPortalImageUrl() {
         List<ServiceInstance> portalImageInstances = discoveryClient.getInstances(SERVICE_ID);
         if (portalImageInstances != null && !portalImageInstances.isEmpty()) {
             return portalImageInstances.get(0).getUri().toString() + "/";
