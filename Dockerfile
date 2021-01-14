@@ -18,4 +18,8 @@ ENTRYPOINT exec java ${JAVA_OPTS_ACTIVITY} org.springframework.boot.loader.JarLa
  --spring.data.mongodb.database=${DATABASE_NAME_ACTIVITY} \
  --eureka.client.service-url.defaultZone=${EUREKA_SERVICE_URL} \
  --activity.suggestions.location=${ACTIVITY_SUGGESTIONS_LOCATION} \
- --activity.suggestions.location-radius=${ACTIVITY_SUGGESTIONS_LOCATION_RADIUS}
+ --activity.suggestions.location-radius=${ACTIVITY_SUGGESTIONS_LOCATION_RADIUS} \
+ --spring.rabbitmq.host=${RABBITMQ_HOST} \
+ --spring.rabbitmq.port=${RABBITMQ_PORT} \
+ --spring.rabbitmq.username=${RABBITMQ_USERNAME} \
+ --spring.rabbitmq.password=${RABBITMQ_PASSWORD}
