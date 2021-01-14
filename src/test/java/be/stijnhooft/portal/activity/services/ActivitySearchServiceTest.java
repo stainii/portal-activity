@@ -4,6 +4,7 @@ import be.stijnhooft.portal.activity.domain.Activity;
 import be.stijnhooft.portal.activity.domain.DateInterval;
 import be.stijnhooft.portal.activity.domain.Location;
 import be.stijnhooft.portal.activity.domain.Weather;
+import be.stijnhooft.portal.activity.messaging.EventTopic;
 import be.stijnhooft.portal.activity.repositories.ActivityRepository;
 import be.stijnhooft.portal.activity.searchparameters.DateSearchParameter;
 import be.stijnhooft.portal.activity.searchparameters.LabelSearchParameter;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @SpringBootTest
+@EnableBinding(EventTopic.class)
 class ActivitySearchServiceTest {
 
     @Autowired

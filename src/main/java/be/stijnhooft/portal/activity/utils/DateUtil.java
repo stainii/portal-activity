@@ -1,7 +1,9 @@
 package be.stijnhooft.portal.activity.utils;
 
 import javax.validation.constraints.NotNull;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,12 @@ public class DateUtil {
         } while (currentDay.isBefore(exclusiveEnd));
 
         return result;
+    }
+
+    public static List<LocalDate> getNextWeekend() {
+        var saturday = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+        var sunday = saturday.plus(1, DAYS);
+        return List.of(saturday, sunday);
     }
 
 }

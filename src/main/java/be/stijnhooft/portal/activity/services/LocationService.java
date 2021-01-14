@@ -32,7 +32,6 @@ public class LocationService {
         String url = UriComponentsBuilder.fromHttpUrl(findPortalLocationUrl())
                 .path("distance")
                 .build()
-                .encode()
                 .toString();
 
         List<DistanceQuery> distanceQueries = activityLocations.stream()

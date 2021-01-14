@@ -9,7 +9,7 @@
     </parent>
     <groupId>be.stijnhooft</groupId>
     <artifactId>portal-activity</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>portal-activity</name>
     <description>Suggests fun activities for days without inspiration</description>
 
@@ -41,6 +41,14 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -61,6 +69,7 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -71,6 +80,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-test-support</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
