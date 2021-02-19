@@ -22,4 +22,5 @@ ENTRYPOINT exec java ${JAVA_OPTS_ACTIVITY} org.springframework.boot.loader.JarLa
  --spring.rabbitmq.host=${RABBITMQ_HOST} \
  --spring.rabbitmq.port=${RABBITMQ_PORT} \
  --spring.rabbitmq.username=${RABBITMQ_USERNAME} \
- --spring.rabbitmq.password=${RABBITMQ_PASSWORD}
+ --spring.rabbitmq.password=${RABBITMQ_PASSWORD} \
+ --portal.image.url=${IMAGE_URL}

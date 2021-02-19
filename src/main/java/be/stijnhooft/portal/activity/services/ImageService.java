@@ -2,10 +2,10 @@ package be.stijnhooft.portal.activity.services;
 
 
 import be.stijnhooft.portal.model.image.ImageDto;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -27,16 +27,17 @@ import java.util.*;
 @Slf4j
 public class ImageService {
 
-    public static final String SERVICE_ID = "image";
     public static final String API_CONTEXT_ROOT = "api/";
     public static final String TRANSFORMATION_DEFINITION = "[{ \"label\": \"thumbnail\", \"transformations\": [{ \"name\": \"resize\", \"width\": \"300\", \"height\": \"300\", \"crop\": true}] }]";
 
-    private final DiscoveryClient discoveryClient;
     private final RestTemplate restTemplate;
 
-    public ImageService(DiscoveryClient discoveryClient, RestTemplate restTemplate) {
-        this.discoveryClient = discoveryClient;
+    @Getter
+    private final String portalImageUrl;
+
+    public ImageService(RestTemplate restTemplate, @Value("${portal.image.url}") String portalImageUrl) {
         this.restTemplate = restTemplate;
+        this.portalImageUrl = portalImageUrl;
     }
 
     public String createThumbnail(@NonNull String imageContent) {
@@ -51,7 +52,7 @@ public class ImageService {
         requestBody.add("image", image);
         requestBody.add("transformationDefinitions", TRANSFORMATION_DEFINITION);
 
-        var url = findPortalImageUrl() + API_CONTEXT_ROOT + "transform/";
+        var url = portalImageUrl + API_CONTEXT_ROOT + "transform/";
         log.info("Creating thumbnail at " + url);
 
         ResponseEntity<List<ImageDto>> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(requestBody), new ParameterizedTypeReference<>() {
@@ -73,7 +74,7 @@ public class ImageService {
 
     public void delete(@NonNull String imageName) {
         try {
-            var url = findPortalImageUrl() + API_CONTEXT_ROOT + "remove/" + imageName;
+            var url = portalImageUrl + API_CONTEXT_ROOT + "remove/" + imageName;
             log.info("Deleting image at " + url);
             restTemplate.delete(url);
         } catch (HttpClientErrorException.NotFound ex)   {
@@ -86,15 +87,6 @@ public class ImageService {
         var beginIndex = imageContent.indexOf(",");
         var data = imageContent.substring(beginIndex + 1);
         return Base64.getDecoder().decode(data);
-    }
-
-    public String findPortalImageUrl() {
-        List<ServiceInstance> portalImageInstances = discoveryClient.getInstances(SERVICE_ID);
-        if (portalImageInstances != null && !portalImageInstances.isEmpty()) {
-            return portalImageInstances.get(0).getUri().toString() + "/";
-        } else {
-            throw new IllegalStateException("No instance of portal-image registered with Eureka");
-        }
     }
 
 }
