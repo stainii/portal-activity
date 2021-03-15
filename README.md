@@ -60,10 +60,11 @@ When running with Docker, you need to provide required environment variables.
 | Name | Example value | Description | Required? |
 | ---- | ------------- | ----------- | -------- |
 | DATABASE_HOST_ACTIVITY | localhost | Host of the database | required
-| DATABASE_PORT_ACTIVITY | 5433 | required |
+| DATABASE_PORT_ACTIVITY | 5433 | Port of the database | required 
 | DATABASE_USERNAME_ACTIVITY | my-username | Username to log in to the database | required
 | DATABASE_PASSWORD_ACTIVITY | secret | Password to log in to the database | required
 | EUREKA_SERVICE_URL | http://portal-eureka:8761/eureka | Url of Eureka | required
+| IMAGE_URL | https://portal.stijnhooft.be/image/ | Publicly available url for the image module | required 
 | ACTIVITY_SUGGESTIONS_LOCATION | Belgium | Location for which the weekly weekend suggestions should be sought | optional
 | ACTIVITY_SUGGESTIONS_LOCATION_RADIUS | 200 | Max radius in km for the location for which the weekly weekend suggestions should be sought | optional
 | JAVA_OPTS_ACTIVITY | -Xmx400m -Xms400m | Java opts you want to pass to the JVM | optional

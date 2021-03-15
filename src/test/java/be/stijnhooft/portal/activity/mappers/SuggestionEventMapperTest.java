@@ -26,7 +26,7 @@ class SuggestionEventMapperTest {
 
     @Test
     void map() {
-        when(imageService.findPortalImageUrl()).thenReturn("http://portal-image/");
+        when(imageService.getPortalImageUrl()).thenReturn("http://portal-image/");
 
         var activity1 = Activity.builder()
                 .name("Maximal")

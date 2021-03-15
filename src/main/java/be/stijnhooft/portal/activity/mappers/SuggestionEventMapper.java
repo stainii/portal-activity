@@ -35,7 +35,7 @@ public class SuggestionEventMapper {
         map.put("name", activity.getName());
         map.put("description", activity.getDescription());
         if (StringUtils.isNotEmpty(activity.getPhoto())) {
-            map.put("photo", imageService.findPortalImageUrl() + "api/retrieve/" + activity.getPhoto());
+            map.put("photo", imageService.getPortalImageUrl() + "api/retrieve/" + activity.getPhoto());
         }
         return map;
     }
