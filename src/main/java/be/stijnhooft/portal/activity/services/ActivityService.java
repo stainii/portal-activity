@@ -64,6 +64,8 @@ public class ActivityService {
                 oldThumbnail = activity.getPhoto();
                 newThumbnail = imageService.createThumbnail(newPhotoContent);
                 activity.setPhoto(newThumbnail);
+            } else {
+                activity.setPhoto(null);
             }
 
             // save
