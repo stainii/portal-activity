@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -47,7 +46,7 @@ public class WeatherService {
             } else {
                 return forecastResponse.getForecasts();
             }
-        } catch (HttpClientErrorException.NotFound ex) {
+        } catch (Exception ex) {
             log.warn("Could not retrieve forecasts for {}", forecastRequestsDto, ex);
             return new ArrayList<>();
         }
