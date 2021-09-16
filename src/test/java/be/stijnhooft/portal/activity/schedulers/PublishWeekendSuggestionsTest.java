@@ -3,6 +3,7 @@ package be.stijnhooft.portal.activity.schedulers;
 import be.stijnhooft.portal.activity.domain.Activity;
 import be.stijnhooft.portal.activity.mappers.SuggestionEventMapper;
 import be.stijnhooft.portal.activity.messaging.EventPublisher;
+import be.stijnhooft.portal.activity.searchparameters.DateSearchParameter;
 import be.stijnhooft.portal.activity.searchparameters.LocationSearchParameter;
 import be.stijnhooft.portal.activity.searchparameters.WeatherSearchParameter;
 import be.stijnhooft.portal.activity.services.ActivitySearchService;
@@ -48,11 +49,13 @@ class PublishWeekendSuggestionsTest {
     void publishWhenThereAreSuggestions() {
         // arrange
         List<LocalDate> nextWeekend = DateUtil.getNextWeekend();
+        var dateSearchParameter = DateSearchParameter.create(nextWeekend.get(0), nextWeekend.get(1))
+                .orElseThrow();
         var locationSearchParameter = LocationSearchParameter.create(LOCATION, LOCATION_RADIUS)
                 .orElseThrow();
         var weatherSearchParameter = WeatherSearchParameter.create(true, nextWeekend.get(0), nextWeekend.get(1))
                 .orElseThrow();
-        var searchParameters = List.of(locationSearchParameter, weatherSearchParameter);
+        var searchParameters = List.of(dateSearchParameter, locationSearchParameter, weatherSearchParameter);
 
         var activities = List.of(
                 Activity.builder().id("1").build(),
@@ -81,11 +84,13 @@ class PublishWeekendSuggestionsTest {
     void publishWhenThereNoSuggestions() {
         // arrange
         List<LocalDate> nextWeekend = DateUtil.getNextWeekend();
+        var dateSearchParameter = DateSearchParameter.create(nextWeekend.get(0), nextWeekend.get(1))
+                .orElseThrow();
         var locationSearchParameter = LocationSearchParameter.create(LOCATION, LOCATION_RADIUS)
                 .orElseThrow();
         var weatherSearchParameter = WeatherSearchParameter.create(true, nextWeekend.get(0), nextWeekend.get(1))
                 .orElseThrow();
-        var searchParameters = List.of(locationSearchParameter, weatherSearchParameter);
+        var searchParameters = List.of(dateSearchParameter, locationSearchParameter, weatherSearchParameter);
 
         when(activitySearchService.find(searchParameters)).thenReturn(new ArrayList<>());
 

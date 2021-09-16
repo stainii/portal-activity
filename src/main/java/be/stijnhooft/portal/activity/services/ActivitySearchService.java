@@ -8,6 +8,7 @@ import be.stijnhooft.portal.activity.searchparameters.SearchParameter;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +40,8 @@ public class ActivitySearchService {
         var allActivities = activityRepository.findAll();
         var filteredActivities = applyItemFilters(allActivities, searchParameters);
         filteredActivities = applyListFilters(filteredActivities, searchParameters);
+
+        log.info("Found {}", filteredActivities.stream().map(Activity::getName).collect(Collectors.toList()));
         return filteredActivities;
     }
 
@@ -58,7 +61,11 @@ public class ActivitySearchService {
 
     private boolean applyItemFilterForSearchParameter(Activity activity, SearchParameter searchParameter) {
         return itemFilterFor(searchParameter)
-                .map(filter -> filter.apply(activity, searchParameter))
+                .map(filter -> {
+                    var result = filter.apply(activity, searchParameter);
+                    log.info("Does filter {} apply to activity {} with search parameter {}? {}", filter.getClass().getSimpleName(), activity.getName(), searchParameter.toString(), result);
+                    return result;
+                })
                 .orElse(true);
     }
 
@@ -76,7 +83,13 @@ public class ActivitySearchService {
                     .filter(listFilter::supports)
                     .collect(Collectors.toList());
             for (SearchParameter searchParameter : supportedSearchParameters) {
-                filteredActivities = listFilter.apply(filteredActivities, searchParameter);
+                var furtherFilteredActivities = listFilter.apply(filteredActivities, searchParameter);
+                log.info("Filtering {} with list filter {} for search parameter {}. {} do not apply to the list filter.",
+                        filteredActivities.stream().map(Activity::getName).collect(Collectors.toList()),
+                        listFilter.getClass().getSimpleName(),
+                        searchParameter.toString(),
+                        CollectionUtils.disjunction(filteredActivities, furtherFilteredActivities));
+                filteredActivities = furtherFilteredActivities;
             }
         }
         return filteredActivities;

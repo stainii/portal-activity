@@ -3,6 +3,7 @@ package be.stijnhooft.portal.activity.schedulers;
 import be.stijnhooft.portal.activity.domain.Activity;
 import be.stijnhooft.portal.activity.mappers.SuggestionEventMapper;
 import be.stijnhooft.portal.activity.messaging.EventPublisher;
+import be.stijnhooft.portal.activity.searchparameters.DateSearchParameter;
 import be.stijnhooft.portal.activity.searchparameters.LocationSearchParameter;
 import be.stijnhooft.portal.activity.searchparameters.WeatherSearchParameter;
 import be.stijnhooft.portal.activity.services.ActivitySearchService;
@@ -57,11 +58,13 @@ public class PublishWeekendSuggestions {
 
     private Collection<Activity> findSuggestions() {
         List<LocalDate> nextWeekend = DateUtil.getNextWeekend();
+        var dateSearchParameter = DateSearchParameter.create(nextWeekend.get(0), nextWeekend.get(1))
+                .orElseThrow();
         var locationSearchParameter = LocationSearchParameter.create(location, locationRadius)
                 .orElseThrow();
         var weatherSearchParameter = WeatherSearchParameter.create(true, nextWeekend.get(0), nextWeekend.get(1))
                 .orElseThrow();
-        return activitySearchService.find(List.of(locationSearchParameter, weatherSearchParameter));
+        return activitySearchService.find(List.of(dateSearchParameter, locationSearchParameter, weatherSearchParameter));
     }
 
 }
