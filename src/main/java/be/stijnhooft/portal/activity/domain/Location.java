@@ -1,6 +1,7 @@
 package be.stijnhooft.portal.activity.domain;
 
 import lombok.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,13 +25,22 @@ public class Location {
     }
 
     public String toString() {
-        return Stream.of(Stream.ofNullable(street),
-                Stream.ofNullable(number),
+        String streetAndNumber = Stream.of(
+                Stream.ofNullable(street),
+                Stream.ofNullable(number))
+                .reduce(Stream::concat)
+                .orElseGet(Stream::empty)
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.joining(" "));
+
+        return Stream.of(
+                Stream.ofNullable(streetAndNumber),
                 Stream.ofNullable(city),
                 Stream.ofNullable(province),
                 Stream.ofNullable(country))
                 .reduce(Stream::concat)
                 .orElseGet(Stream::empty)
+                .filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining(", "));
     }
 }
